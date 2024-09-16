@@ -34,8 +34,9 @@ export class CreateDiscounts1724329693043 implements MigrationInterface {
           },
           {
             name: 'discountType',
-            type: 'tinyint',
-            default: 0,
+            type: 'enum',
+            enum: ['%', 'fixed'],
+            default: `'%'`,
           },
           {
             name: 'discountAmount',
@@ -51,8 +52,9 @@ export class CreateDiscounts1724329693043 implements MigrationInterface {
           },
           {
             name: 'discountStatus',
-            type: 'tinyint',
-            default: 0,
+            type: 'enum',
+            enum: ['active', 'inactive'],
+            default: `'inactive'`,
           },
           {
             name: 'adminId',

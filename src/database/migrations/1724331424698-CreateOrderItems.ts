@@ -38,8 +38,9 @@ export class CreateOrderItems1724331424698 implements MigrationInterface {
           },
           {
             name: 'discountType',
-            type: 'tinyint',
-            default: 0,
+            type: 'enum',
+            enum: ['%', 'fixed'],
+            default: `'%'`,
           },
           {
             name: 'discountAmount',

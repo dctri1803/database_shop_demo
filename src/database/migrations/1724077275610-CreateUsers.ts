@@ -29,8 +29,9 @@ export class CreateUsers1724077275610 implements MigrationInterface {
           },
           {
             name: 'role',
-            type: 'tinyint',
-            default: 0,
+            type: 'enum',
+            enum: ['ADMIN', 'BUYER'],
+            default: `'BUYER'`,
           },
           {
             name: 'password',

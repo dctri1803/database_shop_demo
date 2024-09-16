@@ -46,8 +46,9 @@ export class CreateOrders1724081060251 implements MigrationInterface {
           },
           {
             name: 'status',
-            type: 'tinyint',
-            default: 0,
+            type: 'enum',
+            enum: ['pending', 'confirm', 'cancel'],
+            default: `'pending'`,
           },
           {
             name: 'userId',
