@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseFilePipeBuilder, ParseIntPipe, Patch, Post, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseFilePipeBuilder, ParseIntPipe, Patch, Post, Query, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ProductsServices } from '../services/products.service';
 import { CreateProductsDto } from '../dto/create-product.dto';
 import { UpdateProductsDto } from '../dto/update-product.dto';
@@ -7,14 +7,21 @@ import { Roles } from 'src/modules/users/decorators/roles.decorators';
 import { CurrentUser } from 'src/modules/users/decorators/current-user.decorator';
 import { User } from 'src/database/entities/user.entity';
 import { FilesInterceptor } from '@nestjs/platform-express';
+import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { PageDto } from 'src/shared/dto/page.dto';
+import { PaginationMetaDataDto } from 'src/shared/dto/pagination-metadata.dto';
 
 @Controller('products')
 export class ProductsController {
   constructor(private productsService: ProductsServices) { }
 
   @Get()
-  async findAll() {
-    return await this.productsService.findAll();
+  async findAll(@Query() paginationDto: PaginationDto) {
+    const [data, totalItem] = await this.productsService.findAll(paginationDto);
+    return new PageDto (
+      data,
+      new PaginationMetaDataDto(totalItem, paginationDto),
+    )
   }
 
   @Get(':id')

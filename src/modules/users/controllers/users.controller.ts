@@ -14,7 +14,6 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { AuthServices } from '../services/auth.service';
 import { SignInDto } from '../dto/sign-in.dto';
-import session from 'express-session';
 
 @Controller('users')
 export class UsersController {
@@ -57,10 +56,8 @@ export class UsersController {
 
   @Post('sign-in')
   async signIn(@Body() body:SignInDto,
-                @Session() session:Record<string, any>,
+              @Session() session:Record<string, any>,
   ){
-    console.log('>>>> session: ');
-    
     const user = await this.authService.signIn(body.email, body.password);
     session.userId = user.id;
     return `Login successfully`

@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Product } from "./product.entity";
 
-@Entity('productimagaes')
+@Entity('productimages')
 export class ProductImage {
     @PrimaryGeneratedColumn()
     id: number;
@@ -10,7 +10,7 @@ export class ProductImage {
     createdAt: Date;
 
     @CreateDateColumn()
-    updateAt: Date;
+    updatedAt: Date;
 
     @Column()
     imageUrl: string;

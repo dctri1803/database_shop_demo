@@ -8,6 +8,7 @@ import { User } from 'src/database/entities/user.entity';
 import { ProductImage } from 'src/database/entities/productImage.entity';
 import * as path from 'path';
 import * as fs from 'fs';
+import { PaginationDto } from 'src/shared/dto/pagination.dto';
 
 @Injectable()
 export class ProductsServices {
@@ -19,8 +20,16 @@ export class ProductsServices {
     private dataSource: DataSource,
   ) {}
 
-  findAll() {
-    return this.productsRepository.find()
+  async findAll(paginationDto : PaginationDto) {
+    const {offset, limit } = paginationDto;
+    // return this.productsRepository.find()
+    return await this.productsRepository
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.user', 'user')
+      .leftJoinAndSelect('product.productImages', 'images')
+      .take(limit)
+      .skip(offset)
+      .getManyAndCount()
   }
 
   async findOne(id: number) {
