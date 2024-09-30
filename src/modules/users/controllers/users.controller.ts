@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   Session,
 } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
@@ -14,6 +15,9 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { AuthServices } from '../services/auth.service';
 import { SignInDto } from '../dto/sign-in.dto';
+import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { PageDto } from 'src/shared/dto/page.dto';
+import { PaginationMetaDataDto } from 'src/shared/dto/pagination-metadata.dto';
 
 @Controller('users')
 export class UsersController {
@@ -22,8 +26,12 @@ export class UsersController {
   ) {}
 
   @Get()
-  async findAll() {
-    return await this.usersService.findAll();
+  async findAll(@Query() paginationDto: PaginationDto) {
+    const [data, totalItem] = await this.usersService.findAll(paginationDto);
+    return new PageDto (
+      data,
+      new PaginationMetaDataDto(totalItem, paginationDto),
+    )
   }
 
   @Get(':id')

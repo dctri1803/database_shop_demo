@@ -4,6 +4,7 @@ import { User } from 'src/database/entities/user.entity';
 import { Repository } from 'typeorm';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
+import { PaginationDto } from 'src/shared/dto/pagination.dto';
 
 @Injectable()
 export class UsersService {
@@ -12,8 +13,13 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  findAll() {
-    return this.usersRepository.find();
+  findAll(paginationDto : PaginationDto) {
+    const {offset, limit } = paginationDto;
+    return this.usersRepository
+      .createQueryBuilder('user')
+      .take(limit)
+      .skip(offset)
+      .getManyAndCount()
   }
 
   findOne(id: number) {
